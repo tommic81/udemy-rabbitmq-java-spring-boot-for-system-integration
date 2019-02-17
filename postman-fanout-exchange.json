@@ -1,0 +1,902 @@
+{
+	"info": {
+		"_postman_id": "bb60ef80-2080-4feb-895f-5619b43c6b71",
+		"name": "RabbitMQ - Fanout Mechanism (Udemy)",
+		"description": "# Introduction\nCreate RabbitMQ exchanges & queues for fixed delayed retry mechanism. Rather than creating exchanges & queues manually,use this API collection to shorten your time & effort.\n\n# Overview\nThis collection is for creating mechanism **fanout exchange**. Run it from Postman runner, or run manually in sequence.  \nTo start use it, adjust following postman variables:\n  \n  - `rabbitmq.url` : complete URL of RabbitMQ server (includes `http://` or `https://`, and port)\n  - `rabbitmq.username` : RabbitMQ username with permission to add exchange & queues\n  - `rabbitmq.password` : RabbitMQ password\n  - `rabbitmq.virtualhost` : virtual host, default is `/` (%2f)\n  - `rabbitmq.exchange.name` : name of exchange to use. This will be used to create `x.[rabbitmq.exchange.name].work`, `x.[rabbitmq.exchange.name].wait`, `x.[rabbitmq.exchange.name].dead`, `x.[rabbitmq.exchange.name].retry`\n  - `rabbitmq.queue.name` : name of queue to use. As defined on standard, `rabbitmq.exchange.name` is always part of queue name, so you need only to change the queue name. Example of valid `rabbitmq.queue.name` is `{{rabbitmq.exchange.name}}.myqueuename` (change only the `myqueuename`, but keep the `{{rabbitmq.exchange.name}}` and `.`) . This will be used to create queues: `q.[rabbitmq.queue.name].work`, `q.[rabbitmq.queue.name].wait`, `q.[rabbitmq.queue.name].dead`\n  - `rabbitmq.ttl.ms` : fixed time for delayed retry (in millisecond)\n\n# Authentication\nYou need to know url, username & password for RabbitMQ user which is authorized to create exchanges and queues.\n\n# Error Codes\nAt some point you might encounter 204 (No Content), because exchange/queue already exists. If this happens, you might need to check manually.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Create Work Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"fanout\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Create Wait Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Create Dead Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Create Retry Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.retry",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.retry"
+					]
+				},
+				"description": "[OPTIONAL] Only use this exchange if work exchange type is FANOUT. If you use DIRECT for work exchange, retry exchange is not required (work exchange = retry exchange)"
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Create Work Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n\t  \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.wait\",\r\n\t  \"x-dead-letter-routing-key\": \"accounting\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.accounting.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.accounting.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Create Work Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n\t  \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.wait\",\r\n\t  \"x-dead-letter-routing-key\": \"marketing\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.marketing.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.marketing.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Create Wait Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n\t  \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.retry\",\r\n\t  \"x-dead-letter-routing-key\": \"accounting\",\r\n\t  \"x-message-ttl\": {{rabbitmq.ttl.ms}} //ttl in millisecond\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.accounting.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.accounting.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Create Wait Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n\t  \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.retry\",\r\n\t  \"x-dead-letter-routing-key\": \"marketing\",\r\n\t  \"x-message-ttl\": {{rabbitmq.ttl.ms}} //ttl in millisecond\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.marketing.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.marketing.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Create Dead Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n\t  \"x-queue-mode\": \"lazy\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.accounting.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.accounting.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Create Dead Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n\t  \"x-queue-mode\": \"lazy\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.marketing.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.marketing.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Bind Work Exchange & Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"accounting\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.work/q/q.{{rabbitmq.exchange.name}}.accounting.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.work",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.accounting.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Bind Work Exchange & Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"marketing\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.work/q/q.{{rabbitmq.exchange.name}}.marketing.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.work",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.marketing.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Bind Wait Exchange & Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"accounting\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.wait/q/q.{{rabbitmq.exchange.name}}.accounting.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.wait",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.accounting.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Bind Wait Exchange & Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"marketing\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.wait/q/q.{{rabbitmq.exchange.name}}.marketing.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.wait",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.marketing.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 - Bind Dead Exchange & Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"accounting\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.dead/q/q.{{rabbitmq.exchange.name}}.accounting.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.dead",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.accounting.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 - Bind Dead Exchange & Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"marketing\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.dead/q/q.{{rabbitmq.exchange.name}}.marketing.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.dead",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.marketing.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11 - Bind Retry Exchange & Work Queue (accounting)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"accounting\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.retry/q/q.{{rabbitmq.exchange.name}}.accounting.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.retry",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.accounting.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11 - Bind Retry Exchange & Work Queue (marketing)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"marketing\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.retry/q/q.{{rabbitmq.exchange.name}}.marketing.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.retry",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.marketing.work"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{rabbitmq.username}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "guest",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "fce57a6a-ef08-41e8-8db2-b6467ff68066",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "583d5fd8-c620-4580-bc5a-b425d3b977f4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "976643bd-bf81-4867-8357-172e061cad72",
+			"key": "rabbitmq.url",
+			"value": "http://localhost:15672",
+			"type": "string"
+		},
+		{
+			"id": "7bad05c0-d133-4d4b-bf25-1cd969b734f6",
+			"key": "rabbitmq.username",
+			"value": "guest",
+			"type": "string"
+		},
+		{
+			"id": "dd8f95f0-17a7-4492-9852-4380ced15f75",
+			"key": "rabbitmq.password",
+			"value": "guest",
+			"type": "string"
+		},
+		{
+			"id": "61885645-bf44-4dd9-80bd-49696639960f",
+			"key": "rabbitmq.virtualhost",
+			"value": "%2f",
+			"type": "string"
+		},
+		{
+			"id": "af6cbc97-490f-4030-bccb-0d9e8c21e09d",
+			"key": "rabbitmq.exchange.name",
+			"value": "guideline2",
+			"type": "string"
+		},
+		{
+			"id": "4317eba7-992b-47e2-90eb-4b0dac4f4e40",
+			"key": "rabbitmq.ttl.ms",
+			"value": "30000",
+			"type": "string"
+		}
+	]
+}

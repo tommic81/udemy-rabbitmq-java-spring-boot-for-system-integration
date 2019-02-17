@@ -1,0 +1,10 @@
+NOTE
+- You must have sudo access on Linux for installation.
+- Install ansible using this syntax:
+sudo apt-get install software-properties-common && sudo apt-add-repository -y ppa:ansible/ansible && sudo apt-get update && sudo apt-get install -y ansible
+
+- To execute ansible script, download rabbitmq.yml from this lecture resource, put it on some folder, and execute using this:
+ansible-playbook rabbitmq.yml -K
+
+- If the server does not started (you can't access http://localhost:15672), try to start it manually using this:
+sudo service rabbitmq-server start

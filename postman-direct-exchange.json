@@ -1,0 +1,906 @@
+{
+	"info": {
+		"_postman_id": "06b46cdc-2094-4ddd-a4fe-aedee3898397",
+		"name": "RabbitMQ - Direct Retry (Udemy)",
+		"description": "# Introduction\nCreate RabbitMQ exchanges & queues for fixed delayed retry mechanism. Rather than creating exchanges & queues manually,use this API collection to shorten your time & effort.\n\n# Overview\nThis collection is for creating **direct** mechanism for work exchange. Run it from Postman runner, or run manually in sequence.  \nTo start use it, adjust following postman variables:\n  \n  - `rabbitmq.url` : complete URL of RabbitMQ server (includes `http://` or `https://`, and port)\n  - `rabbitmq.username` : RabbitMQ username with permission to add exchange & queues\n  - `rabbitmq.password` : RabbitMQ password\n  - `rabbitmq.virtualhost` : virtual host, default is `/` (%2f)\n  - `rabbitmq.exchange.name` : name of exchange to use. This will be used to create `x.[rabbitmq.exchange.name].work`, `x.[rabbitmq.exchange.name].wait`, `x.[rabbitmq.exchange.name].dead`\n  - `rabbitmq.queue.name` : name of queue to use. As defined on standard, `rabbitmq.exchange.name` is always part of queue name, so you need only to change the queue name. Example of valid `rabbitmq.queue.name` is `{{rabbitmq.exchange.name}}.myqueuename` (change only the `myqueuename`, but keep the `{{rabbitmq.exchange.name}}` and `.`) . This will be used to create queues: `q.[rabbitmq.queue.name].work`, `q.[rabbitmq.queue.name].wait`, `q.[rabbitmq.queue.name].dead`\n  - `rabbitmq.ttl.ms` : fixed time for delayed retry (in millisecond)\n\n# Authentication\nYou need to know url, username & password for RabbitMQ user which is authorized to create exchanges and queues.\n\n# Error Codes\nAt some point you might encounter 204 (No Content), because exchange/queue already exists. If this happens, you might need to check manually.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Create Work Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Create Wait Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Create Dead Exchange",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/exchanges/{{rabbitmq.virtualhost}}/x.{{rabbitmq.exchange.name}}.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.virtualhost}}",
+						"x.{{rabbitmq.exchange.name}}.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Create Work Queue (image)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n    \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.wait\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.image.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.image.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Create Work Queue (vector)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n    \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.wait\"\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.vector.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.vector.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Create Wait Queue (image)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n    \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.work\",\r\n    \"x-message-ttl\": {{rabbitmq.ttl.ms}} //ttl in millisecond\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.image.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.image.wait"
+					]
+				},
+				"description": "Choose between 06A or 06B"
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Create Wait Queue (vector)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n    \"x-dead-letter-exchange\": \"x.{{rabbitmq.exchange.name}}.work\",\r\n    \"x-message-ttl\": {{rabbitmq.ttl.ms}} //ttl in millisecond\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.vector.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.vector.wait"
+					]
+				},
+				"description": "Choose between 06A or 06B"
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Create Dead Queue (image)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.image.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.image.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Create Dead Queue (vector)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"arguments\":{  \r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/queues/{{rabbitmq.virtualhost}}/q.{{rabbitmq.exchange.name}}.vector.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.virtualhost}}",
+						"q.{{rabbitmq.exchange.name}}.vector.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Bind Work Exchange & Queue (jpg)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"jpg\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.work/q/q.{{rabbitmq.exchange.name}}.image.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.work",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.image.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Bind Work Exchange & Queue (png)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"png\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.work/q/q.{{rabbitmq.exchange.name}}.image.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.work",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.image.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Bind Work Exchange & Queue (svg)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"svg\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.work/q/q.{{rabbitmq.exchange.name}}.vector.work",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.work",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.vector.work"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Bind Wait Exchange & Queue (jpg)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"jpg\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.wait/q/q.{{rabbitmq.exchange.name}}.image.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.wait",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.image.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Bind Wait Exchange & Queue (png)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"png\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.wait/q/q.{{rabbitmq.exchange.name}}.image.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.wait",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.image.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Bind Wait Exchange & Queue (svg)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"svg\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.wait/q/q.{{rabbitmq.exchange.name}}.vector.wait",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.wait",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.vector.wait"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Bind Dead Exchange & Queue (jpg)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"jpg\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.dead/q/q.{{rabbitmq.exchange.name}}.image.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.dead",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.image.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Bind Dead Exchange & Queue (png)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"png\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.dead/q/q.{{rabbitmq.exchange.name}}.image.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.dead",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.image.dead"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Bind Dead Exchange & Queue (svg)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{rabbitmq.password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{rabbitmq.username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"routing_key\":\"svg\"\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.url}}/api/bindings/{{rabbitmq.virtualhost}}/e/x.{{rabbitmq.exchange.name}}.dead/q/q.{{rabbitmq.exchange.name}}.vector.dead",
+					"host": [
+						"{{rabbitmq.url}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.virtualhost}}",
+						"e",
+						"x.{{rabbitmq.exchange.name}}.dead",
+						"q",
+						"q.{{rabbitmq.exchange.name}}.vector.dead"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{rabbitmq.password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{rabbitmq.username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "fce57a6a-ef08-41e8-8db2-b6467ff68066",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "583d5fd8-c620-4580-bc5a-b425d3b977f4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3dc76268-9409-404f-9a29-a0603d375f8f",
+			"key": "rabbitmq.url",
+			"value": "http://localhost:15672",
+			"type": "string"
+		},
+		{
+			"id": "b95fe2d0-bd72-4aff-bd7b-1accb62931b3",
+			"key": "rabbitmq.username",
+			"value": "guest",
+			"type": "string"
+		},
+		{
+			"id": "d320af8d-3bf7-4ccd-bab4-6ca01838c874",
+			"key": "rabbitmq.password",
+			"value": "guest",
+			"type": "string"
+		},
+		{
+			"id": "59dccb08-f315-43e2-8e64-48cf8ff845f4",
+			"key": "rabbitmq.virtualhost",
+			"value": "%2f",
+			"type": "string"
+		},
+		{
+			"id": "7f1adcb9-a1b2-48af-a903-cf24a07bb5a3",
+			"key": "rabbitmq.exchange.name",
+			"value": "guideline",
+			"type": "string"
+		},
+		{
+			"id": "0dac3335-4896-41b0-a9db-4edde6388d10",
+			"key": "rabbitmq.ttl.ms",
+			"value": "30000",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,1269 @@
+{
+	"info": {
+		"_postman_id": "c630bb42-035b-4cf5-87b1-a89d8850d8e2",
+		"name": "Udemy - RabbitMQ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 - Create Queue course.hello",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/course.hello",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"course.hello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Create Queue course.fixedrate",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/course.fixedrate",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"course.fixedrate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Create Queue course.employee",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/course.employee",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"course.employee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Create HR Fanout Exchange",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"fanout\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/exchanges/{{rabbitmq.vhost}}/x.hr",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.vhost}}",
+						"x.hr"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05 - Create Queue q.hr.accounting",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.hr.accounting",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.hr.accounting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06 - Create Queue q.hr.marketing",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.hr.marketing",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.hr.marketing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07 - Bind x.hr + q.hr.accounting",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.hr/q/q.hr.accounting",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.hr",
+						"q",
+						"q.hr.accounting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08 - Bind x.hr + q.hr.marketing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.hr/q/q.hr.marketing",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.hr",
+						"q",
+						"q.hr.marketing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09 - Create Picture Direct Exchange",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"direct\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/exchanges/{{rabbitmq.vhost}}/x.picture",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.vhost}}",
+						"x.picture"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10 - Create Queue q.picture.image",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11 - Create Queue q.picture.vector",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.picture.vector",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.picture.vector"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12 - Bind x.picture + q.picture.image jpg",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"jpg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture/q/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture",
+						"q",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13 - Bind x.picture + q.picture.image png",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"png\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture/q/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture",
+						"q",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14 - Bind x.picture + q.picture.vector svg",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"svg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture/q/q.picture.vector",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture",
+						"q",
+						"q.picture.vector"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15 - Create Picture2 Topic Exchange",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"topic\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/exchanges/{{rabbitmq.vhost}}/x.picture2",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.vhost}}",
+						"x.picture2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16 - Create Queue q.picture.filter",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.picture.filter",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.picture.filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "17 - Create Queue q.picture.log",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.picture.log",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.picture.log"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18 - Bind x.picture2 + q.picture.image png",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"*.*.png\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19 - Bind x.picture2 + q.picture.image jpg",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"#.jpg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20 - Bind x.picture2 + q.picture.vector",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"*.*.svg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.vector",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.vector"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "21 - Bind x.picture2 + q.picture.filter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"mobile.#\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.filter",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "22 - Bind x.picture2 + q.picture.log",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"*.large.svg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.log",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.log"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "23 - Create MyPicture Exchange",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"fanout\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/exchanges/{{rabbitmq.vhost}}/x.mypicture",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.vhost}}",
+						"x.mypicture"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "24 - Create Queue q.mypicture.image",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.mypicture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.mypicture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25 - Bind x.mypicture + q.mypicture.image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.mypicture/q/q.mypicture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.mypicture",
+						"q",
+						"q.mypicture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26 - Create MyPicture DLX",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"fanout\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/exchanges/{{rabbitmq.vhost}}/x.mypicture.dlx",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.vhost}}",
+						"x.mypicture.dlx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "27 - Create Queue q.mypicture.dlx",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"auto_delete\":false,\r\n   \"durable\":true\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.mypicture.dlx",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.mypicture.dlx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "28 - Bind x.mypicture.dlx + q.mypicture.dlx",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.mypicture.dlx/q/q.mypicture.dlx",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.mypicture.dlx",
+						"q",
+						"q.mypicture.dlx"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29 - Delete Queue q.mypicture.image",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.mypicture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.mypicture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "30 - Create Queue q.mypicture.image with DLX",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"auto_delete\": false,\n    \"durable\": true,\n    \"arguments\": {\n        \"x-dead-letter-exchange\": \"x.mypicture.dlx\"\n    }\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.mypicture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.mypicture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "31 - Bind x.mypicture + q.mypicture.image again",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.mypicture/q/q.mypicture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.mypicture",
+						"q",
+						"q.mypicture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "32 - Create Queue q.mypicture.image2",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"arguments\": {\n    \t\"x-message-ttl\" : 5000\n    }\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/queues/{{rabbitmq.vhost}}/q.mypicture.image2",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"queues",
+						"{{rabbitmq.vhost}}",
+						"q.mypicture.image2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "33 - Bind x.mypicture + q.mypicture.image2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.mypicture/q/q.mypicture.image2",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.mypicture",
+						"q",
+						"q.mypicture.image2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "34 - Create x.picture2 exchange",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{  \r\n   \"type\":\"topic\",\r\n   \"auto_delete\":false,\r\n   \"durable\":true,\r\n   \"internal\":false,\r\n   \"arguments\":{  \r\n\r\n   }\r\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/exchanges/{{rabbitmq.vhost}}/x.picture2",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"exchanges",
+						"{{rabbitmq.vhost}}",
+						"x.picture2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "35 - Bind x.picture2 + q.picture.image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"*.*.png\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "36 - Bind x.picture2 + q.picture.image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"#.jpg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.image",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.image"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "37 - Bind x.picture2 + q.picture.vector",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"*.*.svg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.vector",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.vector"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "38 - Bind x.picture2 + q.picture.filter",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"mobile.#\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.filter",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "39 - Bind x.picture2 + q.picture.log",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"routing_key\": \"*.large.svg\"\n}"
+				},
+				"url": {
+					"raw": "{{rabbitmq.host}}/api/bindings/{{rabbitmq.vhost}}/e/x.picture2/q/q.picture.log",
+					"host": [
+						"{{rabbitmq.host}}"
+					],
+					"path": [
+						"api",
+						"bindings",
+						"{{rabbitmq.vhost}}",
+						"e",
+						"x.picture2",
+						"q",
+						"q.picture.log"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "password",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "dev",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "cf89590d-e90b-4766-adee-05068a03c948",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "9a9572ba-1a7c-45bd-92ca-b42f3fcd7773",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0c01a9eb-28c8-4b04-8c9f-4036defd2dd0",
+			"key": "rabbitmq.host",
+			"value": "http://localhost:15672",
+			"type": "string"
+		},
+		{
+			"id": "40da3159-1de2-4016-913a-06003707b2b6",
+			"key": "rabbitmq.vhost",
+			"value": "%2f",
+			"type": "string"
+		}
+	]
+}
